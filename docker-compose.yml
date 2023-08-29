@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql
+    container_name: docker-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: C2SMR-wRjFqVJ6
+      MYSQL_USER: C2SMR
+      MYSQL_PASSWORD: C2SMR-wRjFqVJ6
+      MYSQL_DATABASE: C2SMR
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
+
+  back:
+    build:
+      context: ./api
+    ports:
+      - "5000:5000"
+    container_name: api
+    volumes:
+      - ./back:/python-docker
+
+  front:
+    build:
+      context: ./front
+    ports:
+      - "3000:3000"
+    container_name: react
+    volumes:
+      - .:/usr/src/app/my-app
+      - /usr/src/app/my-app/node_modules
