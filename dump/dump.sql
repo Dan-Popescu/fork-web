@@ -15,7 +15,7 @@ CREATE TABLE DATA(
     CITY VARCHAR(200) REFERENCES CITY(NAME),
     nb_beach INTEGER,
     nb_sea INTEGER,
-    time DATE,
+    time VARCHAR(200),
     temp_sea INTEGER,
     temp_beach INTEGER,
     swell INTEGER,
