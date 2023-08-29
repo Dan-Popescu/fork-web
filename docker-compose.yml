@@ -13,21 +13,25 @@ services:
     volumes:
       - ./dump:/docker-entrypoint-initdb.d
 
-  back:
+  api:
     build:
       context: ./api
-    ports:
-      - "5000:5000"
     container_name: api
     volumes:
-      - ./back:/python-docker
+      - ./api:/python-docker
 
   front:
     build:
       context: ./front
-    ports:
-      - "3000:3000"
-    container_name: react
+    container_name: front
     volumes:
-      - .:/usr/src/app/my-app
+      - ./front:/usr/src/app/my-app
+      - /usr/src/app/my-app/node_modules
+
+  front-dev:
+    build:
+      context: ./front-dev
+    container_name: front-dev
+    volumes:
+      - ./front-dev:/usr/src/app/my-app
       - /usr/src/app/my-app/node_modules
