@@ -77,11 +77,8 @@ def get_nb_alert():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT ID FROM CITY WHERE NAME = %s",
+    cursor.execute("SELECT ID FROM WARNINGS WHERE CITY = %s",
                    (city,))
-    city_id = cursor.fetchall()[0][0]
-    cursor.execute("SELECT  FROM WARNINGS WHERE CITY = %s",
-                   (city_id,))
     warnings = cursor.fetchall()
     dico = {"red": 0, "orange": 0, "green": 0}
     for i in range(len(warnings)):
@@ -103,12 +100,9 @@ def get_nb_personne():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT ID FROM CITY WHERE NAME = %s",
-                   (city,))
-    city_id = cursor.fetchall()[0][0]
-    cursor.execute("SELECT nb_beach, nb_sea FROM DATA WHERE CITY = %s "
+    cursor.execute("SELECT number_beach, number_sea FROM CITY WHERE NAME = %s "
                    "ORDER BY ID DESC",
-                   (city_id,))
+                   (city,))
     response = cursor.fetchall()
     cursor.close()
     return jsonify({"beach": response[0][0], "sea": response[0][1]})
@@ -121,9 +115,6 @@ def get_data_list():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT ID FROM CITY WHERE NAME = %s",
-                   (city,))
-    city_id = cursor.fetchall()[0][0]
     dico = {"data_person_per_hour_on_beach": [],
             "data_person_per_hour_on_sea": [],
             "visibility_sea": [],
@@ -135,7 +126,7 @@ def get_data_list():
     cursor.execute("SELECT nb_beach,nb_sea,cam_visibility,temp_sea,"
                    "temp_beach,swell,wind,visibility FROM DATA"
                    "WHERE CITY = %s ORDER BY ID DESC LIMIT 9 ",
-                   (city_id,))
+                   (city,))
     all_data = cursor.fetchall()
     for i in range(len(all_data)):
         j = 0
@@ -152,13 +143,10 @@ def get_data_alert():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT ID FROM CITY WHERE NAME = %s",
-                   (city,))
-    city_id = cursor.fetchall()[0][0]
     cursor.execute("SELECT color, information, picture "
                    "FROM WARNINGS WHERE CITY = %s "
                    "ORDER BY color ASC",
-                   (city_id,))
+                   (city,))
     all_data = cursor.fetchall()
     return jsonify({"data": all_data})
 
