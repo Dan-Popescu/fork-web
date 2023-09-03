@@ -6,4 +6,4 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 EXPOSE 5000
 
-CMD py app.py
+CMD python3 app.py

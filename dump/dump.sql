@@ -16,9 +16,9 @@ CREATE TABLE DATA(
     nb_beach INTEGER,
     nb_sea INTEGER,
     time VARCHAR(200),
-    temp_sea INTEGER,
+    precipitation INTEGER,
     temp_beach INTEGER,
-    swell INTEGER,
+    cloud_cover INTEGER,
     wind INTEGER,
     visibility INTEGER,
     camp_visibility INTEGER
@@ -31,3 +31,10 @@ CREATE TABLE WARNINGS(
     information VARCHAR(220),
     picture VARCHAR(220)
 );
+
+
+/*---INSERT DATA---*/
+
+INSERT INTO CITY(NAME, mail, password, latitude, longitude, color_flag, actual_picture, number_beach, number_sea) VALUES ('Test','victordalet@protonmail.com','',49,2.23,'green','',0,0,0);
+INSERT INTO DATA(ID,CITY) VALUES(0,'Test');
+INSERT INTO WARNINGS(ID, CITY) VALUES (0,'Test');

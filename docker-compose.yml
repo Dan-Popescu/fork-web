@@ -27,11 +27,3 @@ services:
     volumes:
       - ./front:/usr/src/app/my-app
       - /usr/src/app/my-app/node_modules
-
-  front-dev:
-    build:
-      context: ./front-dev
-    container_name: front-dev
-    volumes:
-      - ./front-dev:/usr/src/app/my-app
-      - /usr/src/app/my-app/node_modules

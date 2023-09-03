@@ -271,9 +271,9 @@ def add_data_city():
     city = key["city"]
     nb_beach = key["nb_beach"]
     nb_sea = key["nb_sea"]
-    temp_sea = key["temp_sea"]
+    precipitation = key["precipitation"]
     temp_beach = key["temp_beach"]
-    swell = key["swell"]
+    cloud_cover = key["cloud_cover"]
     wind = key["wind"]
     visibility = key["visibility"]
     cam_visibility = key["cam_visibility"]
@@ -285,11 +285,11 @@ def add_data_city():
     cursor.execute("SELECT MAX(ID) FROM DATA")
     id_data = cursor.fetchall()[0][0] + 1
     cursor.execute("INSERT INTO DATA(ID,CITY,nb_beach,nb_sea,"
-                   "time,temp_sea,temp_beach,swell,wind,"
+                   "time,precipitation,temp_beach,cloud_cover,wind,"
                    "visibility,cam_visibility)"
                    "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
                    (id_data, city, nb_beach, nb_sea, time,
-                    temp_sea, temp_beach, swell, wind,
+                    precipitation, temp_beach, cloud_cover, wind,
                     visibility, cam_visibility))
     cursor.close()
 
