@@ -1,0 +1,59 @@
+
+
+.container-connection-page {
+  width: 100vw;
+  height: 100vh;
+  background: url("https://inspiranium.fr/cdn/174.png");
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .container-connection-form {
+    width: 40%;
+    height: 40%;
+    border-radius: 20px;
+    background-color: $color_white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .input-email,.input-password {
+      color: $color_black;
+      background-color: $color_light_grey;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+      border: none;
+      border-radius: 4px;
+      padding: 1em;
+      width: 80%;
+      margin-top: 24px;
+      outline-color: $color_blue_dark;
+    }
+
+    .btn-connection {
+      font-weight: 600;
+      text-align: center;
+      font-size: 19px;
+      color: $color_white;
+      background: $color_blue_dark;
+      width: 80%;
+      border: none;
+      border-radius: 4px;
+      padding: 0.8em;
+      cursor: pointer;
+      overflow: hidden;
+      transition: .2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      margin-top: 40px;
+
+      &:hover {
+      box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+      transform: translateY(-4px)
+      }
+    }
+
+  }
+
+
+}

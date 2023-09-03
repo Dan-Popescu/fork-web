@@ -15,7 +15,7 @@ import {Yolo} from "./pages/doc/yolo";
 
 function App() {
   return (
-<BrowserRouter>
+    <BrowserRouter>
       <Routes>
           <Route path={"/app/connect"} element={<Connect/>}></Route>
           <Route path={"/app/home"} element={<Home/>}></Route>
