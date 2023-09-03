@@ -1,9 +1,9 @@
 import React from "react";
 
-export class Index extends React.Component {
+export class Cnn extends React.Component {
     render() {
         return(
-            <div>Hi</div>
+            <div></div>
         );
     }
 }
