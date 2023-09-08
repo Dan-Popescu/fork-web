@@ -17,12 +17,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path={"/app/connect"} element={<Connect/>}></Route>
-          <Route path={"/app/home"} element={<Home/>}></Route>
-          <Route path={"/app/alert"} element={<Alert/>}></Route>
-          <Route path={"/app/cam"} element={<Cam/>}></Route>
-          <Route path={"/app/map"} element={<Map/>}></Route>
-          <Route path={"/app/settings"} element={<Settings/>}></Route>
           <Route path={"/doc"} element={<Doc/>}></Route>
           <Route path={"/doc/machine_learning"} element={<Machine_learning/>}></Route>
           <Route path={"/doc/cnn"} element={<Cnn/>}></Route>
