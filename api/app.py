@@ -97,7 +97,7 @@ def get_nb_alert():
     return jsonify(dico)
 
 
-@app.route('/client/get_nb_personne', methods=['POST'])
+@app.route('/client/get_nb_person', methods=['POST'])
 @cross_origin()
 def get_nb_personne():
     key = request.data
