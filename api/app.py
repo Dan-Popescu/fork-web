@@ -313,6 +313,36 @@ def add_picture_alert_or_moment():
     return
 
 
+@app.route('/machine/new_site', methods=['POST'])
+@cross_origin()
+def add_city():
+    key = request.data
+    key = json.loads(key)
+    name = key["name"]
+    mail = key["mail"]
+    password = key["password"]
+    latitude = key["latitude"]
+    longitude = key["longitude"]
+    color_flag = key["color_flag"]
+    actual_picture = key["actual_picture"]
+    number_beach = key["number_beach"]
+    number_sea = key["number_sea"]
+    key_api = key["key"]
+    if key_api != RASPBERRY_KEY:
+        return
+    cursor = mysql.connection.cursor()
+    cursor.execute("INSERT INTO CITY(NAME,mail"
+                   ",password,latitude,longitude"
+                   ",color_flag,actual_picture,"
+                   "number_beach,number_sea)"
+                   "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                   (name, mail, password, latitude, longitude,
+                    color_flag, actual_picture,
+                    number_beach, number_sea))
+    cursor.close()
+    return
+
+
 """
 LAUNCH APPLICATION
 """
