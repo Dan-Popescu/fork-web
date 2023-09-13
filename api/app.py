@@ -59,6 +59,16 @@ def connect():
     return jsonify({"response": is_connected})
 
 
+@app.route('/client/get_name', methods=["POST,GET"])
+@cross_origin()
+def get_name():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT name FROM CITY")
+    list_name = cursor.fetchall()
+    cursor.close()
+    return jsonify({"name": list_name})
+
+
 @app.route('/client/get_flag', methods=['POST'])
 @cross_origin()
 def get_flag():
