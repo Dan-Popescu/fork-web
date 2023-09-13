@@ -29,7 +29,8 @@ CREATE TABLE WARNINGS(
     CITY VARCHAR(200) REFERENCES CITY(NAME),
     color INTEGER,
     information VARCHAR(220),
-    picture VARCHAR(220)
+    picture VARCHAR(220),
+    notif INTEGER
 );
 
 

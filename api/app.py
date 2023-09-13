@@ -51,7 +51,6 @@ def connect():
                        (mail,))
         password_verif = cursor.fetchall()[0][0]
         password = hashlib.sha512(password).hexdigest()
-
         if password_verif == password:
             is_connected = True
         cursor.close()
@@ -148,13 +147,26 @@ def get_data_alert():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT color, information, picture "
+    cursor.execute("SELECT color, information, picture, notif "
                    "FROM WARNINGS WHERE CITY = %s "
                    "ORDER BY color ASC",
                    (city,))
     all_data = cursor.fetchall()
     cursor.close()
     return jsonify({"data": all_data})
+
+
+@app.route('/client/set_notif', methods=['POST'])
+@cross_origin()
+def set_notif():
+    key = request.data
+    key = json.loads(key)
+    city = key["city"]
+    cursor = mysql.connection.cursor()
+    cursor.execute("UPDATE WARNINGS SET notif = 1 WHERE CITY = %s",
+                   (city,))
+    cursor.close()
+    return
 
 
 @app.route('/client/get_init_position', methods=['POST'])
@@ -256,9 +268,9 @@ def add_alert():
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT MAX(ID) FROM WARNINGS")
     id_alert = cursor.fetchall()[0][0] + 1
-    cursor.execute("INSERT INTO WARNINGS(ID,color,information,city)"
-                   "VALUES(%s,%s,%s,%s)",
-                   (id_alert, color, message, city))
+    cursor.execute("INSERT INTO WARNINGS(ID,color,information,city,notif)"
+                   "VALUES(%s,%s,%s,%s,%s)",
+                   (id_alert, color, message, city, 0))
     cursor.close()
     return jsonify({"id": id_alert})
 
