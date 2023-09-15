@@ -1,0 +1,24 @@
+@font-face {
+    font-family: 'my-font';
+    src : url("../assets/font.otf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  text-decoration: none;
+  font-family: 'my-font', serif;
+}
+
+$color_blue_dark : #30A2FF;
+$color_blue_light : #00C4FF;
+$color_blue_dark_dark : #4931d3;
+$color_light_grey   : #e8eeef;
+$color_beige_dark : #FFE7A0;
+$color_beige_light : #FFF5B8;
+$color_black : #111;
+$color_white : #eee;
+$color_red : #ab0a0a;
+$color_orange : #f17020;
+$color_green : #397546;
