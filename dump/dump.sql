@@ -34,8 +34,7 @@ CREATE TABLE WARNINGS(
 );
 
 
-/*---INSERT DATA---*/
+/*---INSERT INIT DATA---*/
 
-INSERT INTO CITY(NAME, mail, password, latitude, longitude, color_flag, actual_picture, number_beach, number_sea) VALUES ('Test','victordalet@protonmail.com','',49,2.23,'green','',0,0,0);
-INSERT INTO DATA(ID,CITY) VALUES(0,'Test');
-INSERT INTO WARNINGS(ID, CITY) VALUES (0,'Test');
+INSERT INTO DATA(ID) VALUES(0);
+INSERT INTO WARNINGS(ID) VALUES (0);
