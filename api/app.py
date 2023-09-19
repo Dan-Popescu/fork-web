@@ -59,7 +59,7 @@ def connect():
     return jsonify({"response": is_connected})
 
 
-@app.route('/client/get_name', methods=["POST,GET"])
+@app.route('/client/get_name', methods=["POST", "GET"])
 @cross_origin()
 def get_name():
     cursor = mysql.connection.cursor()
