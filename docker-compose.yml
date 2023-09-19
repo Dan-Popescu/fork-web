@@ -2,9 +2,33 @@ version: '3.8'
 
 services:
 
+  reverse-proxy:
+    image: traefik:v2.4
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - $PWD/traefik.toml:/etc/traefik/traefik.toml
+      - $PWD/acme.json:/acme.json
+    labels:
+      - "traefik.http.middlewares.strip-www.redirectregex.regex=^https?://(www\\.)(.+)"
+      - "traefik.http.middlewares.strip-www.redirectregex.replacement=https://$${2}"
+      - "traefik.http.middlewares.strip-www.redirectregex.permanent=true"
+    restart: always
+    networks:
+      - web
+
+
   mysql:
     image: mysql
     container_name: docker-mysql
+    ports:
+      - "3004:3306"
+    networks:
+      - web
     environment:
       MYSQL_ROOT_PASSWORD: C2SMR-wRjFqVJ6
       MYSQL_USER: C2SMR
@@ -17,17 +41,31 @@ services:
     build:
       context: ./api
     container_name: api
-    ports:
-      - "5000:5000"
+    networks:
+      - web
     volumes:
       - ./api:/python-docker
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.itw.rule=Host(`api.c2smr.fr`)"
+      - "traefik.http.routers.itw.entrypoints=websecure"
 
   front:
     build:
       context: ./front
     container_name: front
-    ports:
-      - "3000:3000"
+    networks:
+      - web
     volumes:
       - ./front:/usr/src/app/my-app
       - /usr/src/app/my-app/node_modules
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.react-ui.rule=Host(`c2smr.fr`,`www.c2smr.fr`)"
+      - "traefik.http.routers.react-ui.entrypoints=websecure"
+      - "traefik.http.routers.react-ui.middlewares=strip-www"
+
+
+networks:
+  web:
+    external: true
