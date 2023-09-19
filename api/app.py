@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 from time import gmtime, strftime
 from werkzeug.utils import secure_filename
 import os
+import base64
 import json
 import hashlib
 
@@ -176,7 +177,7 @@ def set_notif():
     cursor.execute("UPDATE WARNINGS SET notif = 1 WHERE CITY = %s",
                    (city,))
     cursor.close()
-    return
+    return jsonify({"res": "yes"})
 
 
 @app.route('/client/get_init_position', methods=['POST'])
@@ -204,6 +205,18 @@ def get_all_position():
     all_data = cursor.fetchall()
     cursor.close()
     return jsonify({"data": all_data})
+
+
+@app.route('/client/get_picture', methods=['POST'])
+@cross_origin()
+def get_picture_base_64():
+    key = request.data
+    key = json.loads(key)
+    city = key["city"]
+    with open(app.config['UPLOADED_FILES'] + city, 'rb') as image_file:
+        image_data = image_file.read()
+        base64_data = base64.b64encode(image_data).decode('utf-8')
+        return jsonify({"picture": base64_data})
 
 
 """
