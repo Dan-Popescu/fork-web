@@ -32,6 +32,10 @@ docker compose up --build mysql api
 ### All
 
 ```shell
+docker create network web
+```
+
+```shell
 docker compose up --build
 ```
 

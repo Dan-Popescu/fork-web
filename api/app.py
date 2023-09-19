@@ -4,6 +4,7 @@ from flask_cors import CORS, cross_origin
 from time import gmtime, strftime
 from werkzeug.utils import secure_filename
 import os
+import base64
 import json
 import hashlib
 
@@ -59,7 +60,7 @@ def connect():
     return jsonify({"response": is_connected})
 
 
-@app.route('/client/get_name', methods=["POST,GET"])
+@app.route('/client/get_name', methods=["POST", "GET"])
 @cross_origin()
 def get_name():
     cursor = mysql.connection.cursor()
@@ -176,7 +177,7 @@ def set_notif():
     cursor.execute("UPDATE WARNINGS SET notif = 1 WHERE CITY = %s",
                    (city,))
     cursor.close()
-    return
+    return jsonify({"res": "yes"})
 
 
 @app.route('/client/get_init_position', methods=['POST'])
@@ -206,6 +207,18 @@ def get_all_position():
     return jsonify({"data": all_data})
 
 
+@app.route('/client/get_picture', methods=['POST'])
+@cross_origin()
+def get_picture_base_64():
+    key = request.data
+    key = json.loads(key)
+    city = key["city"]
+    with open(app.config['UPLOADED_FILES'] + city, 'rb') as image_file:
+        image_data = image_file.read()
+        base64_data = base64.b64encode(image_data).decode('utf-8')
+        return jsonify({"picture": base64_data})
+
+
 """
 API ROUTES FOR RASPBERRY
 """
@@ -220,13 +233,13 @@ def set_flag():
     color = key["color"]
     key = key["key"]
     if key != RASPBERRY_KEY:
-        return
+        return jsonify({"res": "key error"})
     cursor = mysql.connection.cursor()
     cursor.execute("UPDATE CITY SET color_flag= %s "
                    "WHERE NAME = %s",
                    (color, city))
     cursor.close()
-    return
+    return jsonify({"res": "yes"})
 
 
 @app.route('/machine/set_number_people', methods=['POST'])
@@ -239,13 +252,13 @@ def set_number_people():
     nb_sea = key["nb_sea"]
     key = key["key"]
     if key != RASPBERRY_KEY:
-        return
+        return jsonify({"res": "key error"})
     cursor = mysql.connection.cursor()
     cursor.execute("UPDATE CITY SET number_beach= %s, number_sea= %s"
                    "WHERE NAME = %s",
                    (nb_beach, nb_sea, city))
     cursor.close()
-    return
+    return jsonify({"res": "yes"})
 
 
 @app.route('/machine/delete_alert_by_id', methods=['POST'])
@@ -256,12 +269,12 @@ def delete_alert_by_id():
     id_alert = key["id_alert"]
     key = key["key"]
     if key != RASPBERRY_KEY:
-        return
+        return jsonify({"res": "key error"})
     cursor = mysql.connection.cursor()
     cursor.execute("DELETE FROM WARNINGS WHERE ID = %s",
                    (id_alert,))
     cursor.close()
-    return
+    return jsonify({"res": "yes"})
 
 
 @app.route('/machine/add_alert', methods=['POST'])
@@ -274,7 +287,7 @@ def add_alert():
     city = key["city"]
     key = key["key"]
     if key != RASPBERRY_KEY:
-        return
+        return jsonify({"res": "key error"})
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT MAX(ID) FROM WARNINGS")
     id_alert = cursor.fetchall()[0][0] + 1
@@ -302,7 +315,7 @@ def add_data_city():
     time = strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime())
     key = key["key"]
     if key != RASPBERRY_KEY:
-        return
+        return jsonify({"res": "key error"})
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT MAX(ID) FROM DATA")
     id_data = cursor.fetchall()[0][0] + 1
@@ -314,6 +327,7 @@ def add_data_city():
                     precipitation, temp_beach, cloud_cover, wind,
                     visibility, cam_visibility))
     cursor.close()
+    return jsonify({"res": "yes"})
 
 
 @app.route('/machine/add_picture_alert_or_moment', methods=['POST'])
@@ -327,12 +341,12 @@ def add_picture_alert_or_moment():
     key = json.loads(key)
     key = key["key"]
     if key != RASPBERRY_KEY:
-        return
+        return jsonify({"res": "key error"})
     file = request.files['file']
     if file:
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOADED_FILES'], filename))
-    return
+    return jsonify({"res": "yes"})
 
 
 @app.route('/machine/new_site', methods=['POST'])
@@ -351,7 +365,7 @@ def add_city():
     number_sea = key["number_sea"]
     key_api = key["key"]
     if key_api != RASPBERRY_KEY:
-        return
+        return jsonify({"res": "key error"})
     cursor = mysql.connection.cursor()
     cursor.execute("INSERT INTO CITY(NAME,mail"
                    ",password,latitude,longitude"
@@ -362,7 +376,7 @@ def add_city():
                     color_flag, actual_picture,
                     number_beach, number_sea))
     cursor.close()
-    return
+    return jsonify({"res": "yes"})
 
 
 """
