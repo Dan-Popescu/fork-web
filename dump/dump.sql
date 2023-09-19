@@ -21,7 +21,7 @@ CREATE TABLE DATA(
     cloud_cover INTEGER,
     wind INTEGER,
     visibility INTEGER,
-    camp_visibility INTEGER
+    cam_visibility INTEGER
 );
 
 CREATE TABLE WARNINGS(
