@@ -11,6 +11,7 @@ jobs:
           compose-file: "./docker-compose.yml"
           down-flags: "--volumes"
           services: |
+            reverse-proxy
             mysql
             front
             api
