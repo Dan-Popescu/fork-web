@@ -21,7 +21,7 @@ app = Flask(__name__, static_url_path='',
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["SECRET_KEY"] = os.urandom(24)
-app.config['UPLOADED_FILES'] = 'static/files'
+app.config['UPLOADED_FILES'] = ''
 
 """
 INITIALISATION MYSQL
@@ -91,7 +91,7 @@ def get_nb_alert():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT ID FROM WARNINGS WHERE CITY = %s",
+    cursor.execute("SELECT COLOR FROM WARNINGS WHERE CITY = %s",
                    (city,))
     warnings = cursor.fetchall()
     dico = {"red": 0, "orange": 0, "green": 0}
@@ -114,8 +114,7 @@ def get_nb_personne():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT number_beach, number_sea FROM CITY WHERE NAME = %s "
-                   "ORDER BY ID DESC",
+    cursor.execute("SELECT number_beach, number_sea FROM CITY WHERE NAME = %s ",
                    (city,))
     response = cursor.fetchall()
     cursor.close()
@@ -132,14 +131,12 @@ def get_data_list():
     dico = {"data_person_per_hour_on_beach": [],
             "data_person_per_hour_on_sea": [],
             "visibility_sea": [],
-            "weather_temperature_sea": [],
             "weather_temperature_beach": [],
-            "weather_swell": [],
             "weather_wind": [],
             "weather_visibility": []}
-    cursor.execute("SELECT nb_beach,nb_sea,cam_visibility,temp_sea,"
-                   "temp_beach,swell,wind,visibility FROM DATA"
-                   "WHERE CITY = %s ORDER BY ID DESC LIMIT 9 ",
+    cursor.execute("SELECT nb_beach,nb_sea,cam_visibility,"
+                   "temp_beach,wind,visibility FROM DATA"
+                   " WHERE CITY = %s ORDER BY ID DESC LIMIT 9 ",
                    (city,))
     all_data = cursor.fetchall()
     cursor.close()
@@ -187,7 +184,7 @@ def get_init_position():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT latitude, longitude FROM city WHERE name = %s",
+    cursor.execute("SELECT latitude, longitude FROM city WHERE NAME = %s",
                    (city,))
     data = cursor.fetchall()
     cursor.close()
@@ -198,9 +195,9 @@ def get_init_position():
 @cross_origin()
 def get_all_position():
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT latitude, longitude, name, "
+    cursor.execute("SELECT latitude, longitude, NAME, "
                    "(SELECT COUNT(ID) FROM WARNINGS "
-                   "WHERE CITY = CITY.ID) "
+                   "WHERE CITY = CITY.NAME) "
                    "FROM CITY")
     all_data = cursor.fetchall()
     cursor.close()
@@ -337,11 +334,11 @@ def add_picture_alert_or_moment():
     title of the picture is moment_city or alert_number_city
     :return:
     """
-    key = request.data
-    key = json.loads(key)
-    key = key["key"]
-    if key != RASPBERRY_KEY:
-        return jsonify({"res": "key error"})
+    # key = request.data
+    # key = json.loads(key)
+    # key = key["key"]
+    # if key != RASPBERRY_KEY:
+    #    return jsonify({"res": "key error"})
     file = request.files['file']
     if file:
         filename = secure_filename(file.filename)
