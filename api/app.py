@@ -114,7 +114,8 @@ def get_nb_personne():
     key = json.loads(key)
     city = key["city"]
     cursor = mysql.connection.cursor()
-    cursor.execute("SELECT number_beach, number_sea FROM CITY WHERE NAME = %s ",
+    cursor.execute("SELECT number_beach, number_sea FROM CITY "
+                   "WHERE NAME = %s ",
                    (city,))
     response = cursor.fetchall()
     cursor.close()
