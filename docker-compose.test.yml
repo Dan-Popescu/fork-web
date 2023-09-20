@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql
+    container_name: docker-mysql
+    ports:
+      - "3004:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: C2SMR-wRjFqVJ6
+      MYSQL_USER: C2SMR
+      MYSQL_PASSWORD: C2SMR-wRjFqVJ6
+      MYSQL_DATABASE: C2SMR
+
+  api:
+    build:
+      context: ./api
+    container_name: api
+    volumes:
+      - ./api:/python-docker
+
+  front:
+    build:
+      context: ./front
+    container_name: front
+    volumes:
+      - ./front:/usr/src/app/my-app
+      - /usr/src/app/my-app/node_modules
