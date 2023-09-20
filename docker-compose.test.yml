@@ -24,8 +24,6 @@ services:
     build:
       context: ./front
     container_name: front
-    networks:
-      - web
     volumes:
       - ./front:/usr/src/app/my-app
       - /usr/src/app/my-app/node_modules
