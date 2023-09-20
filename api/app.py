@@ -133,9 +133,11 @@ def get_data_list():
             "visibility_sea": [],
             "weather_temperature_beach": [],
             "weather_wind": [],
-            "weather_visibility": []}
+            "weather_visibility": [],
+            "cloud_cover": [],
+            }
     cursor.execute("SELECT nb_beach,nb_sea,cam_visibility,"
-                   "temp_beach,wind,visibility FROM DATA"
+                   "temp_beach,wind,visibility,cloud_cover FROM DATA"
                    " WHERE CITY = %s ORDER BY ID DESC LIMIT 9 ",
                    (city,))
     all_data = cursor.fetchall()
