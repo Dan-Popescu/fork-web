@@ -12,8 +12,6 @@ services:
       MYSQL_USER: C2SMR
       MYSQL_PASSWORD: C2SMR-wRjFqVJ6
       MYSQL_DATABASE: C2SMR
-    volumes:
-      - ./dump:/docker-entrypoint-initdb.d
 
   api:
     build:
@@ -21,10 +19,6 @@ services:
     container_name: api
     volumes:
       - ./api:/python-docker
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.itw.rule=Host(`api.c2smr.fr`)"
-      - "traefik.http.routers.itw.entrypoints=websecure"
 
   front:
     build:
@@ -35,8 +29,3 @@ services:
     volumes:
       - ./front:/usr/src/app/my-app
       - /usr/src/app/my-app/node_modules
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.react-ui.rule=Host(`c2smr.fr`,`www.c2smr.fr`)"
-      - "traefik.http.routers.react-ui.entrypoints=websecure"
-      - "traefik.http.routers.react-ui.middlewares=strip-www"
