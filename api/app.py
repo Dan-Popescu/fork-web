@@ -261,18 +261,18 @@ def set_number_people():
     return jsonify({"res": "yes"})
 
 
-@app.route('/machine/delete_alert_by_id', methods=['POST'])
+@app.route('/machine/delete_alert_by_city', methods=['POST'])
 @cross_origin()
 def delete_alert_by_id():
     key = request.data
     key = json.loads(key)
-    id_alert = key["id_alert"]
+    city = key["city"]
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
     cursor = mysql.connection.cursor()
-    cursor.execute("DELETE FROM WARNINGS WHERE ID = %s",
-                   (id_alert,))
+    cursor.execute("DELETE FROM WARNINGS WHERE city = %s",
+                   (city,))
     cursor.close()
     return jsonify({"res": "yes"})
 
