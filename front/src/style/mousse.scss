@@ -1,8 +1,10 @@
 .mouse {
-    position: absolute;
+    position: fixed;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: $color_blue_dark;
+    background-color: $color_black;
     transition: .1s;
 }
+
+
