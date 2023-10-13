@@ -47,8 +47,8 @@ services:
       - ./api:/python-docker
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.itw.rule=Host(`api.c2smr.fr`)"
-      - "traefik.http.routers.itw.entrypoints=websecure"
+      - "traefik.http.routers.api.rule=Host(`api.c2smr.fr`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
 
   front:
     build:
@@ -61,9 +61,9 @@ services:
       - /usr/src/app/my-app/node_modules
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.react-ui.rule=Host(`c2smr.fr`,`www.c2smr.fr`)"
-      - "traefik.http.routers.react-ui.entrypoints=websecure"
-      - "traefik.http.routers.react-ui.middlewares=strip-www"
+      - "traefik.http.routers.front.rule=Host(`c2smr.fr`,`www.c2smr.fr`)"
+      - "traefik.http.routers.front.entrypoints=websecure"
+      - "traefik.http.routers.front.middlewares=strip-www"
 
 
 networks:
