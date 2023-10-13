@@ -7,6 +7,13 @@
         h1 {
             font-size: 100px;
         }
+
+        .wrapper-img {
+
+            &.a, &.b {
+                display: none;
+            }
+        }
     }
 
     .container-types-sensors {
@@ -25,6 +32,27 @@
             height: 50vh;
             border-top: 2px solid $color_white;
             margin-left: -2px;
+
+        }
+    }
+
+    .container-safe-beach {
+
+        flex-direction: column;
+        .wrapper {
+            .btn-download {
+                margin-left: 25vw;
+            }
+        }
+
+        img {
+            width: 40%;
+        }
+    }
+
+    .container-types-sensors {
+        img {
+            width: 60%;
         }
     }
 }
