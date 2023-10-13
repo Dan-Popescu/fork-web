@@ -23,6 +23,8 @@ services:
   front:
     build:
       context: ./front
+    ports:
+      - "3000:3000"
     container_name: front
     volumes:
       - ./front:/usr/src/app/my-app

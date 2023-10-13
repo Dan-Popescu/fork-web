@@ -11,6 +11,23 @@
   font-family: 'my-font', serif;
 }
 
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    display: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #fff;
+}
+
 $color_blue_dark : #30A2FF;
 $color_blue_light : #00C4FF;
 $color_blue_dark_dark : #4931d3;
@@ -22,3 +39,4 @@ $color_white : #eee;
 $color_red : #ab0a0a;
 $color_orange : #f17020;
 $color_green : #397546;
+$color_dark_grey : #23232d;
