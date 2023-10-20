@@ -21,7 +21,7 @@ app = Flask(__name__, static_url_path='',
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["SECRET_KEY"] = os.urandom(24)
-app.config['UPLOADED_FILES'] = ''
+app.config['UPLOADED_FILES'] = 'static/files'
 
 """
 INITIALISATION MYSQL
@@ -32,6 +32,7 @@ app.config['MYSQL_USER'] = USER_MYSQL
 app.config['MYSQL_PASSWORD'] = PASSWORD_MYSQL
 app.config['MYSQL_DB'] = DB_NAME_MYSQL
 mysql = MySQL(app)
+
 
 """
 API ROUTES FOR CLIENT
@@ -47,7 +48,8 @@ def connect():
     try:
         mail = key['email']
         password = key['password']
-        cursor = mysql.connection.cursor()
+        with app.app_context():
+            cursor = mysql.connection.cursor()
         cursor.execute("SELECT password FROM CITY WHERE mail = %s",
                        (mail,))
         password_verif = cursor.fetchall()[0][0]
@@ -63,7 +65,8 @@ def connect():
 @app.route('/client/get_name', methods=["POST", "GET"])
 @cross_origin()
 def get_name():
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT name FROM CITY")
     list_name = cursor.fetchall()
     cursor.close()
@@ -76,7 +79,8 @@ def get_flag():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT color_flag FROM CITY WHERE name = %s",
                    (city,))
     color_flag = cursor.fetchall()[0][0]
@@ -90,7 +94,8 @@ def get_nb_alert():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT COLOR FROM WARNINGS WHERE CITY = %s",
                    (city,))
     warnings = cursor.fetchall()
@@ -113,7 +118,8 @@ def get_nb_personne():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT number_beach, number_sea FROM CITY "
                    "WHERE NAME = %s ",
                    (city,))
@@ -128,7 +134,8 @@ def get_data_list():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     dico = {"data_person_per_hour_on_beach": [],
             "data_person_per_hour_on_sea": [],
             "visibility_sea": [],
@@ -157,7 +164,8 @@ def get_data_alert():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT color, information, picture, notif "
                    "FROM WARNINGS WHERE CITY = %s "
                    "ORDER BY color ASC",
@@ -173,7 +181,8 @@ def set_notif():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("UPDATE WARNINGS SET notif = 1 WHERE CITY = %s",
                    (city,))
     cursor.close()
@@ -186,7 +195,8 @@ def get_init_position():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT latitude, longitude FROM city WHERE NAME = %s",
                    (city,))
     data = cursor.fetchall()
@@ -197,7 +207,8 @@ def get_init_position():
 @app.route('/client/get_all_position', methods=['POST'])
 @cross_origin()
 def get_all_position():
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT latitude, longitude, NAME, "
                    "(SELECT COUNT(ID) FROM WARNINGS "
                    "WHERE CITY = CITY.NAME) "
@@ -234,7 +245,8 @@ def set_flag():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("UPDATE CITY SET color_flag= %s "
                    "WHERE NAME = %s",
                    (color, city))
@@ -253,7 +265,8 @@ def set_number_people():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("UPDATE CITY SET number_beach= %s, number_sea= %s"
                    "WHERE NAME = %s",
                    (nb_beach, nb_sea, city))
@@ -270,7 +283,8 @@ def delete_alert_by_id():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("DELETE FROM WARNINGS WHERE city = %s",
                    (city,))
     cursor.close()
@@ -288,7 +302,8 @@ def add_alert():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT MAX(ID) FROM WARNINGS")
     id_alert = cursor.fetchall()[0][0] + 1
     cursor.execute("INSERT INTO WARNINGS(ID,color,information,city,notif)"
@@ -316,7 +331,8 @@ def add_data_city():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("SELECT MAX(ID) FROM DATA")
     id_data = cursor.fetchall()[0][0] + 1
     cursor.execute("INSERT INTO DATA(ID,CITY,nb_beach,nb_sea,"
@@ -366,7 +382,8 @@ def add_city():
     key_api = key["key"]
     if key_api != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
     cursor.execute("INSERT INTO CITY(NAME,mail"
                    ",password,latitude,longitude"
                    ",color_flag,actual_picture,"
