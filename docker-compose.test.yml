@@ -21,6 +21,8 @@ services:
     ports:
       - "5000:5000"
     container_name: api
+    environment:
+      RASPBERRY_KEY: ${RASPBERRY_KEY}
     volumes:
       - ./api:/python-docker
 

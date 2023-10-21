@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS, cross_origin
@@ -8,13 +10,12 @@ import base64
 import json
 import hashlib
 
-from config import USER_MYSQL, PASSWORD_MYSQL, HOST_MYSQL, DB_NAME_MYSQL, \
-    RASPBERRY_KEY
+from config import USER_MYSQL, PASSWORD_MYSQL, HOST_MYSQL, DB_NAME_MYSQL
 
 """
 INITIALISATION FLASK
 """
-
+RASPBERRY_KEY = sys.argv[1]
 app = Flask(__name__, static_url_path='',
             static_folder='static',
             template_folder='templates')

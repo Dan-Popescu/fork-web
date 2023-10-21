@@ -43,6 +43,8 @@ services:
     container_name: api
     networks:
       - web
+    environment:
+      RASPBERRY_KEY: ${RASPBERRY_KEY}
     volumes:
       - ./api:/python-docker
     labels:
