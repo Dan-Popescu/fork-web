@@ -45,6 +45,10 @@ services:
       - web
     environment:
       RASPBERRY_KEY: ${RASPBERRY_KEY}
+      DB_NAME_MYSQL: ${DB_NAME_MYSQL}
+      HOST_MYSQL: ${HOST_MYSQL}
+      PASSWORD_MYSQL: ${PASSWORD_MYSQL}
+      USER_MYSQL: ${USER_MYSQL}
     volumes:
       - ./api:/python-docker
     labels:

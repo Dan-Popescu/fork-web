@@ -5,4 +5,4 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-CMD python3 app.py ${RASPBERRY_KEY}
+CMD python3 app.py ${RASPBERRY_KEY} ${DB_NAME_MYSQL} ${HOST_MYSQL} ${PASSWORD_MYSQL} ${USER_MYSQL}

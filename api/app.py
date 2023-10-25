@@ -10,8 +10,6 @@ import base64
 import json
 import hashlib
 
-from config import USER_MYSQL, PASSWORD_MYSQL, HOST_MYSQL, DB_NAME_MYSQL
-
 """
 INITIALISATION FLASK
 """
@@ -28,12 +26,12 @@ app.config['UPLOADED_FILES'] = 'static/files'
 INITIALISATION MYSQL
 """
 
-app.config['MYSQL_HOST'] = HOST_MYSQL
-app.config['MYSQL_USER'] = USER_MYSQL
-app.config['MYSQL_PASSWORD'] = PASSWORD_MYSQL
-app.config['MYSQL_DB'] = DB_NAME_MYSQL
-mysql = MySQL(app)
+app.config['MYSQL_HOST'] = sys.argv[3]
+app.config['MYSQL_USER'] = sys.argv[5]
+app.config['MYSQL_PASSWORD'] = sys.argv[4]
+app.config['MYSQL_DB'] = sys.argv[2]
 
+mysql = MySQL(app)
 
 """
 API ROUTES FOR CLIENT
