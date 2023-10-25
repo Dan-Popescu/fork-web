@@ -8,7 +8,7 @@ export class Home extends React.Component {
     constructor(props) {
         super(props);
         init_page__dataLayer("HOME");
-        setTimeout(()=> {
+        setTimeout(() => {
             this.animation_scroll();
         }, 200);
     }
@@ -16,20 +16,20 @@ export class Home extends React.Component {
     animation_scroll() {
         const nb_slide_total = 5
         let sliding_list = [];
-        for (let nb_slide = 1 ; nb_slide <= nb_slide_total ; nb_slide++) {
-            sliding_list.push(document.querySelector('.slide'+nb_slide.toString()));
+        for (let nb_slide = 1; nb_slide <= nb_slide_total; nb_slide++) {
+            sliding_list.push(document.querySelector('.slide' + nb_slide.toString()));
         }
         const multiplicative = 0.6;
-        window.addEventListener('scroll',()=>{
-            const {scrollTop,clientHeight} = document.documentElement;
+        window.addEventListener('scroll', () => {
+            const {scrollTop, clientHeight} = document.documentElement;
             let topElementToTopViewport = [];
-            for (let nb_slide = 0 ; nb_slide < nb_slide_total ; nb_slide++) {
+            for (let nb_slide = 0; nb_slide < nb_slide_total; nb_slide++) {
                 topElementToTopViewport.push(sliding_list[nb_slide].getBoundingClientRect().top);
             }
 
-            for (let nb_slide = 0 ; nb_slide < nb_slide_total ; nb_slide++) {
-                if(scrollTop > (scrollTop+topElementToTopViewport[nb_slide]).toFixed()-clientHeight*multiplicative){
-                    sliding_list[nb_slide].classList.add('active'+(nb_slide+1).toString());
+            for (let nb_slide = 0; nb_slide < nb_slide_total; nb_slide++) {
+                if (scrollTop > (scrollTop + topElementToTopViewport[nb_slide]).toFixed() - clientHeight * multiplicative) {
+                    sliding_list[nb_slide].classList.add('active' + (nb_slide + 1).toString());
                 }
             }
 
@@ -41,8 +41,10 @@ export class Home extends React.Component {
         return (
             <div>
                 <Mouse/>
-                <div class={"container-home"}>
-                    <h1>C2SMR</h1>
+                <div class={"container-home container-home-page"}>
+                    <h1><img alt={"logo"}
+                             src={"https://media.discordapp.net/attachments/1047568954845048944/1164928988586721390/logo_2.png?ex=6544ffaa&is=65328aaa&hm=a8778c1c34340bd698ddbf414541b04cc0fda897605e7f10dfa610404a05ce94&=&width=578&height=578"}/>
+                    </h1>
                     <h2>Pour une baignade surveillée !</h2>
                     <div class={"btn-download"} onClick={() => {
                         button_click__dataLayer("download");
@@ -54,14 +56,14 @@ export class Home extends React.Component {
                     </div>
                     <div className={"wrapper-img b"}>
                         <img alt={"img-round-pres"}
-                             src={"https://media.discordapp.net/attachments/1084071570567335956/1162305243846029404/image.png?ex=653b741c&is=6528ff1c&hm=24addab4efaf096a3e58f0f711ba635368792dac576a7d4b80210921ad1f7695&=&width=1000&height=521"}/>
+                             src={"https://media.discordapp.net/attachments/1125864163391066186/1166836472427593728/image.png?ex=654bf025&is=65397b25&hm=93adbcfe4793897a0447b72bb6bb5d275eab244c3956f5c447ea258404d8a14f&=&width=1042&height=500"}/>
                     </div>
                     <div className={"wrapper-img c"}>
                         <img alt={"img-round-pres"}
-                             src={"https://media.discordapp.net/attachments/1084071570567335956/1162305243846029404/image.png?ex=653b741c&is=6528ff1c&hm=24addab4efaf096a3e58f0f711ba635368792dac576a7d4b80210921ad1f7695&=&width=1000&height=521"}/>
+                             src={"https://media.discordapp.net/attachments/1125864163391066186/1166836579403300894/image.png?ex=654bf03f&is=65397b3f&hm=0a648c352920d9e7f834f74aa5a701210972a1abb36b41b60f54d978fefaf600&=&width=1042&height=373"}/>
                     </div>
                 </div>
-                <div class={"container-safe-beach"}>
+                <div class={"container-safe-beach container-home-page"}>
                     <div className={"wrapper"}>
                         <h2>Retrouver toutes les informations en allant à la plage et aider à alerter.</h2>
                         <div className={"btn-download"} onClick={() => {
@@ -70,9 +72,15 @@ export class Home extends React.Component {
                         </div>
                     </div>
                     <img alt={"img app-pres 1"} class={"slide1"}
-                         src={"https://media.discordapp.net/attachments/1154119850210369586/1154120015705014453/image.png?ex=65395c86&is=6526e786&hm=946ae7de9d7f2518649fc16ab7cfa94993fddc6e852bae91f78c8ea767cf37c7&"}/>
+                         src={"https://media.discordapp.net/attachments/1084071570567335956/1166835513328672788/image.png?ex=654bef41&is=65397a41&hm=59b5ed2759595f8c5540cc46b16449ba8287303613bf5eb1fc17f09d8b8e19b5&"}/>
                 </div>
-                <div class={"container-types-sensors"}>
+                <div class={"container-roboflow container-home-page"}>
+                    <h2>Retrouvez notre dataset sur <span onClick={() => {
+                        window.open("https://universe.roboflow.com/c2smr");
+                        button_click__dataLayer("roboflow");
+                    }}>ROBOFLOW</span>.</h2>
+                </div>
+                <div class={"container-types-sensors container-home-page"}>
                     <div class={"cam"}>
                         <img alt={"camera"}
                              class={"slide5"}
@@ -85,7 +93,7 @@ export class Home extends React.Component {
                         <h3>Via une webcam Public !</h3>
                     </div>
                 </div>
-                <div class={"container-join"}>
+                <div class={"container-join container-home-page"}>
                     <h2 class={"slide3"}>Comment le mettre en place ?</h2>
                     <div class={"btn-join slide4"} onClick={() => {
                         window.location.href = "mailto:victordalet@protonmail.com"

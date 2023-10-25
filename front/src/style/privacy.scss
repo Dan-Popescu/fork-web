@@ -1,0 +1,35 @@
+.container-page-privacy {
+  width: 100vw;
+  min-height: 100vh;
+  height: 110%;
+  background: $color_dark_grey;
+  display: flex;
+  justify-content: space-evenly;
+  align-content: center;
+  flex-direction: column;
+
+  h1, h2, h3 {
+    margin-top: 20px;
+    color: $color_white;
+    font-weight: bold;
+  }
+
+  h1, h2 {
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    width: 50vw;
+    margin-left: 25vw;
+    font-size: 18px;
+
+    ul {
+      margin-top: 20px;
+    }
+  }
+
+}

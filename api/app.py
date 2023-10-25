@@ -1,3 +1,5 @@
+import sys
+
 from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
 from flask_cors import CORS, cross_origin
@@ -8,29 +10,27 @@ import base64
 import json
 import hashlib
 
-from config import USER_MYSQL, PASSWORD_MYSQL, HOST_MYSQL, DB_NAME_MYSQL, \
-    RASPBERRY_KEY
-
 """
 INITIALISATION FLASK
 """
-
+RASPBERRY_KEY = sys.argv[1]
 app = Flask(__name__, static_url_path='',
             static_folder='static',
             template_folder='templates')
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["SECRET_KEY"] = os.urandom(24)
-app.config['UPLOADED_FILES'] = ''
+app.config['UPLOADED_FILES'] = 'static/files'
 
 """
 INITIALISATION MYSQL
 """
 
-app.config['MYSQL_HOST'] = HOST_MYSQL
-app.config['MYSQL_USER'] = USER_MYSQL
-app.config['MYSQL_PASSWORD'] = PASSWORD_MYSQL
-app.config['MYSQL_DB'] = DB_NAME_MYSQL
+app.config['MYSQL_HOST'] = sys.argv[3]
+app.config['MYSQL_USER'] = sys.argv[5]
+app.config['MYSQL_PASSWORD'] = sys.argv[4]
+app.config['MYSQL_DB'] = sys.argv[2]
+
 mysql = MySQL(app)
 
 """
@@ -47,14 +47,15 @@ def connect():
     try:
         mail = key['email']
         password = key['password']
-        cursor = mysql.connection.cursor()
-        cursor.execute("SELECT password FROM CITY WHERE mail = %s",
-                       (mail,))
-        password_verif = cursor.fetchall()[0][0]
-        password = hashlib.sha512(password).hexdigest()
-        if password_verif == password:
-            is_connected = True
-        cursor.close()
+        with app.app_context():
+            cursor = mysql.connection.cursor()
+            cursor.execute("SELECT password FROM CITY WHERE mail = %s",
+                           (mail,))
+            password_verif = cursor.fetchall()[0][0]
+            password = hashlib.sha512(password).hexdigest()
+            if password_verif == password:
+                is_connected = True
+            cursor.close()
     except NameError:
         print("error connection : {}".format(NameError))
     return jsonify({"response": is_connected})
@@ -63,10 +64,11 @@ def connect():
 @app.route('/client/get_name', methods=["POST", "GET"])
 @cross_origin()
 def get_name():
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT name FROM CITY")
-    list_name = cursor.fetchall()
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT name FROM CITY")
+        list_name = cursor.fetchall()
+        cursor.close()
     return jsonify({"name": list_name})
 
 
@@ -76,11 +78,12 @@ def get_flag():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT color_flag FROM CITY WHERE name = %s",
-                   (city,))
-    color_flag = cursor.fetchall()[0][0]
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT color_flag FROM CITY WHERE name = %s",
+                       (city,))
+        color_flag = cursor.fetchall()[0][0]
+        cursor.close()
     return jsonify({"flag": color_flag})
 
 
@@ -90,20 +93,21 @@ def get_nb_alert():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT COLOR FROM WARNINGS WHERE CITY = %s",
-                   (city,))
-    warnings = cursor.fetchall()
-    dico = {"red": 0, "orange": 0, "green": 0}
-    for i in range(len(warnings)):
-        match warnings[i][0]:
-            case 0:
-                dico["red"] += 1
-            case 1:
-                dico["orange"] += 1
-            case 2:
-                dico["green"] += 1
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT COLOR FROM WARNINGS WHERE CITY = %s",
+                       (city,))
+        warnings = cursor.fetchall()
+        dico = {"red": 0, "orange": 0, "green": 0}
+        for i in range(len(warnings)):
+            match warnings[i][0]:
+                case 0:
+                    dico["red"] += 1
+                case 1:
+                    dico["orange"] += 1
+                case 2:
+                    dico["green"] += 1
+        cursor.close()
     return jsonify(dico)
 
 
@@ -113,12 +117,13 @@ def get_nb_personne():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT number_beach, number_sea FROM CITY "
-                   "WHERE NAME = %s ",
-                   (city,))
-    response = cursor.fetchall()
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT number_beach, number_sea FROM CITY "
+                       "WHERE NAME = %s ",
+                       (city,))
+        response = cursor.fetchall()
+        cursor.close()
     return jsonify({"beach": response[0][0], "sea": response[0][1]})
 
 
@@ -128,21 +133,22 @@ def get_data_list():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
-    dico = {"data_person_per_hour_on_beach": [],
-            "data_person_per_hour_on_sea": [],
-            "visibility_sea": [],
-            "weather_temperature_beach": [],
-            "weather_wind": [],
-            "weather_visibility": [],
-            "cloud_cover": [],
-            }
-    cursor.execute("SELECT nb_beach,nb_sea,cam_visibility,"
-                   "temp_beach,wind,visibility,cloud_cover FROM DATA"
-                   " WHERE CITY = %s ORDER BY ID DESC LIMIT 9 ",
-                   (city,))
-    all_data = cursor.fetchall()
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        dico = {"data_person_per_hour_on_beach": [],
+                "data_person_per_hour_on_sea": [],
+                "visibility_sea": [],
+                "weather_temperature_beach": [],
+                "weather_wind": [],
+                "weather_visibility": [],
+                "cloud_cover": [],
+                }
+        cursor.execute("SELECT nb_beach,nb_sea,cam_visibility,"
+                       "temp_beach,wind,visibility,cloud_cover FROM DATA"
+                       " WHERE CITY = %s ORDER BY ID DESC LIMIT 9 ",
+                       (city,))
+        all_data = cursor.fetchall()
+        cursor.close()
     for i in range(len(all_data)):
         j = 0
         for key, value in dico.items():
@@ -157,13 +163,14 @@ def get_data_alert():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT color, information, picture, notif "
-                   "FROM WARNINGS WHERE CITY = %s "
-                   "ORDER BY color ASC",
-                   (city,))
-    all_data = cursor.fetchall()
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT color, information, picture, notif "
+                       "FROM WARNINGS WHERE CITY = %s "
+                       "ORDER BY color ASC",
+                       (city,))
+        all_data = cursor.fetchall()
+        cursor.close()
     return jsonify({"data": all_data})
 
 
@@ -173,10 +180,11 @@ def set_notif():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
-    cursor.execute("UPDATE WARNINGS SET notif = 1 WHERE CITY = %s",
-                   (city,))
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("UPDATE WARNINGS SET notif = 1 WHERE CITY = %s",
+                       (city,))
+        cursor.close()
     return jsonify({"res": "yes"})
 
 
@@ -186,10 +194,11 @@ def get_init_position():
     key = request.data
     key = json.loads(key)
     city = key["city"]
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT latitude, longitude FROM city WHERE NAME = %s",
-                   (city,))
-    data = cursor.fetchall()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT latitude, longitude FROM city WHERE NAME = %s",
+                       (city,))
+        data = cursor.fetchall()
     cursor.close()
     return jsonify({"latitude": data[0][0], "longitude": data[0][1]})
 
@@ -197,13 +206,14 @@ def get_init_position():
 @app.route('/client/get_all_position', methods=['POST'])
 @cross_origin()
 def get_all_position():
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT latitude, longitude, NAME, "
-                   "(SELECT COUNT(ID) FROM WARNINGS "
-                   "WHERE CITY = CITY.NAME) "
-                   "FROM CITY")
-    all_data = cursor.fetchall()
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT latitude, longitude, NAME, "
+                       "(SELECT COUNT(ID) FROM WARNINGS "
+                       "WHERE CITY = CITY.NAME) "
+                       "FROM CITY")
+        all_data = cursor.fetchall()
+        cursor.close()
     return jsonify({"data": all_data})
 
 
@@ -234,11 +244,12 @@ def set_flag():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
-    cursor.execute("UPDATE CITY SET color_flag= %s "
-                   "WHERE NAME = %s",
-                   (color, city))
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("UPDATE CITY SET color_flag= %s "
+                       "WHERE NAME = %s",
+                       (color, city))
+        cursor.close()
     return jsonify({"res": "yes"})
 
 
@@ -253,11 +264,12 @@ def set_number_people():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
-    cursor.execute("UPDATE CITY SET number_beach= %s, number_sea= %s"
-                   "WHERE NAME = %s",
-                   (nb_beach, nb_sea, city))
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("UPDATE CITY SET number_beach= %s, number_sea= %s"
+                       "WHERE NAME = %s",
+                       (nb_beach, nb_sea, city))
+        cursor.close()
     return jsonify({"res": "yes"})
 
 
@@ -270,10 +282,11 @@ def delete_alert_by_id():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
-    cursor.execute("DELETE FROM WARNINGS WHERE city = %s",
-                   (city,))
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("DELETE FROM WARNINGS WHERE city = %s",
+                       (city,))
+        cursor.close()
     return jsonify({"res": "yes"})
 
 
@@ -288,13 +301,14 @@ def add_alert():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT MAX(ID) FROM WARNINGS")
-    id_alert = cursor.fetchall()[0][0] + 1
-    cursor.execute("INSERT INTO WARNINGS(ID,color,information,city,notif)"
-                   "VALUES(%s,%s,%s,%s,%s)",
-                   (id_alert, color, message, city, 0))
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT MAX(ID) FROM WARNINGS")
+        id_alert = cursor.fetchall()[0][0] + 1
+        cursor.execute("INSERT INTO WARNINGS(ID,color,information,city,notif)"
+                       "VALUES(%s,%s,%s,%s,%s)",
+                       (id_alert, color, message, city, 0))
+        cursor.close()
     return jsonify({"id": id_alert})
 
 
@@ -316,17 +330,18 @@ def add_data_city():
     key = key["key"]
     if key != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT MAX(ID) FROM DATA")
-    id_data = cursor.fetchall()[0][0] + 1
-    cursor.execute("INSERT INTO DATA(ID,CITY,nb_beach,nb_sea,"
-                   "time,precipitation,temp_beach,cloud_cover,wind,"
-                   "visibility,cam_visibility)"
-                   "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                   (id_data, city, nb_beach, nb_sea, time,
-                    precipitation, temp_beach, cloud_cover, wind,
-                    visibility, cam_visibility))
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("SELECT MAX(ID) FROM DATA")
+        id_data = cursor.fetchall()[0][0] + 1
+        cursor.execute("INSERT INTO DATA(ID,CITY,nb_beach,nb_sea,"
+                       "time,precipitation,temp_beach,cloud_cover,wind,"
+                       "visibility,cam_visibility)"
+                       "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                       (id_data, city, nb_beach, nb_sea, time,
+                        precipitation, temp_beach, cloud_cover, wind,
+                        visibility, cam_visibility))
+        cursor.close()
     return jsonify({"res": "yes"})
 
 
@@ -366,16 +381,17 @@ def add_city():
     key_api = key["key"]
     if key_api != RASPBERRY_KEY:
         return jsonify({"res": "key error"})
-    cursor = mysql.connection.cursor()
-    cursor.execute("INSERT INTO CITY(NAME,mail"
-                   ",password,latitude,longitude"
-                   ",color_flag,actual_picture,"
-                   "number_beach,number_sea)"
-                   "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
-                   (name, mail, password, latitude, longitude,
-                    color_flag, actual_picture,
-                    number_beach, number_sea))
-    cursor.close()
+    with app.app_context():
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO CITY(NAME,mail"
+                       ",password,latitude,longitude"
+                       ",color_flag,actual_picture,"
+                       "number_beach,number_sea)"
+                       "VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                       (name, mail, password, latitude, longitude,
+                        color_flag, actual_picture,
+                        number_beach, number_sea))
+        cursor.close()
     return jsonify({"res": "yes"})
 
 

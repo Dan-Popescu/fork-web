@@ -12,11 +12,21 @@ services:
       MYSQL_USER: C2SMR
       MYSQL_PASSWORD: C2SMR-wRjFqVJ6
       MYSQL_DATABASE: C2SMR
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
 
   api:
     build:
       context: ./api
+    ports:
+      - "5000:5000"
     container_name: api
+    environment:
+      RASPBERRY_KEY: ${RASPBERRY_KEY}
+      DB_NAME_MYSQL: ${DB_NAME_MYSQL}
+      HOST_MYSQL: ${HOST_MYSQL}
+      PASSWORD_MYSQL: ${PASSWORD_MYSQL}
+      USER_MYSQL: ${USER_MYSQL}
     volumes:
       - ./api:/python-docker
 
