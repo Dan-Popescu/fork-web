@@ -56,11 +56,11 @@ export class Home extends React.Component {
                     </div>
                     <div className={"wrapper-img b"}>
                         <img alt={"img-round-pres"}
-                             src={"https://media.discordapp.net/attachments/1084071570567335956/1162305243846029404/image.png?ex=653b741c&is=6528ff1c&hm=24addab4efaf096a3e58f0f711ba635368792dac576a7d4b80210921ad1f7695&=&width=1000&height=521"}/>
+                             src={"https://media.discordapp.net/attachments/1125864163391066186/1166836472427593728/image.png?ex=654bf025&is=65397b25&hm=93adbcfe4793897a0447b72bb6bb5d275eab244c3956f5c447ea258404d8a14f&=&width=1042&height=500"}/>
                     </div>
                     <div className={"wrapper-img c"}>
                         <img alt={"img-round-pres"}
-                             src={"https://media.discordapp.net/attachments/1084071570567335956/1162305243846029404/image.png?ex=653b741c&is=6528ff1c&hm=24addab4efaf096a3e58f0f711ba635368792dac576a7d4b80210921ad1f7695&=&width=1000&height=521"}/>
+                             src={"https://media.discordapp.net/attachments/1125864163391066186/1166836579403300894/image.png?ex=654bf03f&is=65397b3f&hm=0a648c352920d9e7f834f74aa5a701210972a1abb36b41b60f54d978fefaf600&=&width=1042&height=373"}/>
                     </div>
                 </div>
                 <div class={"container-safe-beach container-home-page"}>
@@ -72,7 +72,7 @@ export class Home extends React.Component {
                         </div>
                     </div>
                     <img alt={"img app-pres 1"} class={"slide1"}
-                         src={"https://media.discordapp.net/attachments/1154119850210369586/1154120015705014453/image.png?ex=65395c86&is=6526e786&hm=946ae7de9d7f2518649fc16ab7cfa94993fddc6e852bae91f78c8ea767cf37c7&"}/>
+                         src={"https://media.discordapp.net/attachments/1084071570567335956/1166835513328672788/image.png?ex=654bef41&is=65397a41&hm=59b5ed2759595f8c5540cc46b16449ba8287303613bf5eb1fc17f09d8b8e19b5&"}/>
                 </div>
                 <div class={"container-roboflow container-home-page"}>
                     <h2>Retrouvez notre dataset sur <span onClick={() => {
