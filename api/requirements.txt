@@ -1,4 +1,5 @@
 flask==3.0.0
+flasgger
 flask_mysqldb==2.0.0
 flask_cors==4.0.0
-werkzeug
+werkzeug==3.0.1
