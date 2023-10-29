@@ -1,6 +1,7 @@
 import sys
 
 from flask import Flask, request, jsonify
+from flasgger import Swagger
 from flask_mysqldb import MySQL
 from flask_cors import CORS, cross_origin
 from time import gmtime, strftime
@@ -17,6 +18,7 @@ RASPBERRY_KEY = sys.argv[1]
 app = Flask(__name__, static_url_path='',
             static_folder='static',
             template_folder='templates')
+swagger = Swagger(app)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["SECRET_KEY"] = os.urandom(24)
@@ -64,6 +66,13 @@ def connect():
 @app.route('/client/get_name', methods=["POST", "GET"])
 @cross_origin()
 def get_name():
+    """
+    Get name of city
+    ---
+    responses:
+        200:
+            description: List of city
+    """
     with app.app_context():
         cursor = mysql.connection.cursor()
         cursor.execute("SELECT name FROM CITY")
@@ -75,6 +84,17 @@ def get_name():
 @app.route('/client/get_flag', methods=['POST'])
 @cross_origin()
 def get_flag():
+    """
+    Get flag color
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"flag": color_flag}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -90,6 +110,17 @@ def get_flag():
 @app.route('/client/get_nb_alert', methods=['POST'])
 @cross_origin()
 def get_nb_alert():
+    """
+    Get nb alert
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"red": 0, "orange": 0, "green": 0}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -114,6 +145,17 @@ def get_nb_alert():
 @app.route('/client/get_nb_person', methods=['POST'])
 @cross_origin()
 def get_nb_personne():
+    """
+    Get nb person
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"beach": response, "sea": response}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -130,6 +172,24 @@ def get_nb_personne():
 @app.route('/client/get_data_list', methods=['POST'])
 @cross_origin()
 def get_data_list():
+    """
+    Get data list
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"data_person_per_hour_on_beach": [],
+                "data_person_per_hour_on_sea": [],
+                "visibility_sea": [],
+                "weather_temperature_beach": [],
+                "weather_wind": [],
+                "weather_visibility": [],
+                "cloud_cover": [],
+                }
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -160,6 +220,17 @@ def get_data_list():
 @app.route('/client/get_data_alert', methods=['POST'])
 @cross_origin()
 def get_data_alert():
+    """
+    Get data alert
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"data": all_data}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -191,6 +262,17 @@ def set_notif():
 @app.route('/client/get_init_position', methods=['POST'])
 @cross_origin()
 def get_init_position():
+    """
+    Get init position
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"latitude": data, "longitude": data}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -206,6 +288,13 @@ def get_init_position():
 @app.route('/client/get_all_position', methods=['POST'])
 @cross_origin()
 def get_all_position():
+    """
+    Get all position
+    ---
+    responses:
+        200:
+            description: {"data": all_data}
+    """
     with app.app_context():
         cursor = mysql.connection.cursor()
         cursor.execute("SELECT latitude, longitude, NAME, "
@@ -220,6 +309,17 @@ def get_all_position():
 @app.route('/client/get_picture', methods=['POST'])
 @cross_origin()
 def get_picture_base_64():
+    """
+    Get picture base 64
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"picture": base64_data}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -237,6 +337,23 @@ API ROUTES FOR RASPBERRY
 @app.route('/machine/set_flag', methods=['POST'])
 @cross_origin()
 def set_flag():
+    """
+    set flag
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+        - name: color
+          type: number
+          required: true
+        - name: key
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"res": "yes"}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -256,6 +373,26 @@ def set_flag():
 @app.route('/machine/set_number_people', methods=['POST'])
 @cross_origin()
 def set_number_people():
+    """
+    set number peale
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+        - name: nb_beach
+          type: number
+          required: true
+        - name: nb_sea
+          type: number
+          required: true
+        - name: key
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"res": "yes"}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -276,6 +413,20 @@ def set_number_people():
 @app.route('/machine/delete_alert_by_city', methods=['POST'])
 @cross_origin()
 def delete_alert_by_id():
+    """
+    delete alert
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+        - name: key
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"res": "yes"}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -293,6 +444,26 @@ def delete_alert_by_id():
 @app.route('/machine/add_alert', methods=['POST'])
 @cross_origin()
 def add_alert():
+    """
+    add alert
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+        - name: color
+          type: number
+          required: true
+        - name: message
+          type: string
+          required: true
+        - name: key
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"res": "yes"}
+    """
     key = request.data
     key = json.loads(key)
     color = key["color"]
@@ -315,6 +486,44 @@ def add_alert():
 @app.route('/machine/add_data_city', methods=['POST'])
 @cross_origin()
 def add_data_city():
+    """
+    add data city
+    ---
+    parameters:
+        - name: city
+          type: string
+          required: true
+        - name: nb_beach
+          type: number
+          required: true
+        - name: nb_sea
+          type: number
+          required: true
+        - name: precipitation
+          type: number
+          required: true
+        - name: temp_beach
+          type: number
+          required: true
+        - name: cloud_cover
+          type: number
+          required: true
+        - name: wind
+          type: number
+          required: true
+        - name: visibility
+          type: number
+          required: true
+        - name: cam_visibility
+          type: number
+          required: true
+        - name: key
+          type: string
+          required: true
+    responses:
+        200:
+            description: {"res": "yes"}
+    """
     key = request.data
     key = json.loads(key)
     city = key["city"]
@@ -349,14 +558,24 @@ def add_data_city():
 @cross_origin()
 def add_picture_alert_or_moment():
     """
-    title of the picture is moment_city or alert_number_city
-    :return:
+    add picture
+    ---
+    parameters:
+        - name: key
+          type: string
+          required: true
+        - name: file
+          type: file
+          required: true
+    responses:
+        200:
+            description: {"res": "yes"}
     """
-    # key = request.data
-    # key = json.loads(key)
-    # key = key["key"]
-    # if key != RASPBERRY_KEY:
-    #    return jsonify({"res": "key error"})
+    key = request.data
+    key = json.loads(key)
+    key = key["key"]
+    if key != RASPBERRY_KEY:
+        return jsonify({"res": "key error"})
     file = request.files['file']
     if file:
         filename = secure_filename(file.filename)
