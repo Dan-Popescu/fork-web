@@ -366,6 +366,7 @@ def set_flag():
         cursor.execute("UPDATE CITY SET color_flag= %s "
                        "WHERE NAME = %s",
                        (color, city))
+        mysql.connection.commit()
         cursor.close()
     return jsonify({"res": "yes"})
 
@@ -406,6 +407,7 @@ def set_number_people():
         cursor.execute("UPDATE CITY SET number_beach= %s, number_sea= %s"
                        "WHERE NAME = %s",
                        (nb_beach, nb_sea, city))
+        mysql.connection.commit()
         cursor.close()
     return jsonify({"res": "yes"})
 
@@ -437,6 +439,7 @@ def delete_alert_by_id():
         cursor = mysql.connection.cursor()
         cursor.execute("DELETE FROM WARNINGS WHERE city = %s",
                        (city,))
+        mysql.connection.commit()
         cursor.close()
     return jsonify({"res": "yes"})
 
@@ -479,6 +482,7 @@ def add_alert():
         cursor.execute("INSERT INTO WARNINGS(ID,color,information,city,notif)"
                        "VALUES(%s,%s,%s,%s,%s)",
                        (id_alert, color, message, city, 0))
+        mysql.connection.commit()
         cursor.close()
     return jsonify({"id": id_alert})
 
@@ -550,6 +554,7 @@ def add_data_city():
                        (id_data, city, nb_beach, nb_sea, time,
                         precipitation, temp_beach, cloud_cover, wind,
                         visibility, cam_visibility))
+        mysql.connection.commit()
         cursor.close()
     return jsonify({"res": "yes"})
 
@@ -610,6 +615,7 @@ def add_city():
                        (name, mail, password, latitude, longitude,
                         color_flag, actual_picture,
                         number_beach, number_sea))
+        mysql.connection.commit()
         cursor.close()
     return jsonify({"res": "yes"})
 
