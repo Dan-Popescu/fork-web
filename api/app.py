@@ -22,7 +22,7 @@ swagger = Swagger(app)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["SECRET_KEY"] = os.urandom(24)
-app.config['UPLOADED_FILES'] = 'static/files'
+app.config['UPLOADED_FILES'] = ''
 
 """
 INITIALISATION MYSQL
@@ -323,6 +323,7 @@ def get_picture_base_64():
     key = request.data
     key = json.loads(key)
     city = key["city"]
+    city = city.replace(' ', '_')
     with open(app.config['UPLOADED_FILES'] + city, 'rb') as image_file:
         image_data = image_file.read()
         base64_data = base64.b64encode(image_data).decode('utf-8')

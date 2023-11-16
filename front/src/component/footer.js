@@ -11,7 +11,7 @@ export class Footer extends React.Component {
                     alt={"google play store"}
                     onClick={() => {
                         button_click__dataLayer("google play store");
-                        document.location.href = ""; //to completed
+                        window.open("https://play.google.com/store/apps/details?id=com.anonymous.C2SMR");
                     }}/>
             </footer>
         );

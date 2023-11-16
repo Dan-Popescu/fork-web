@@ -47,6 +47,7 @@ export class Home extends React.Component {
                     </h1>
                     <h2>Pour une baignade surveillée !</h2>
                     <div class={"btn-download"} onClick={() => {
+                        window.open("https://play.google.com/store/apps/details?id=com.anonymous.C2SMR");
                         button_click__dataLayer("download");
                     }}>DOWNLOAD
                     </div>
@@ -67,6 +68,7 @@ export class Home extends React.Component {
                     <div className={"wrapper"}>
                         <h2>Retrouver toutes les informations en allant à la plage et aider à alerter.</h2>
                         <div className={"btn-download"} onClick={() => {
+                            window.open("https://play.google.com/store/apps/details?id=com.anonymous.C2SMR");
                             button_click__dataLayer("download_page_2");
                         }}>DOWNLOAD
                         </div>
