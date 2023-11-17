@@ -77,10 +77,22 @@ export class Home extends React.Component {
                          src={"https://media.discordapp.net/attachments/1084071570567335956/1166835513328672788/image.png?ex=654bef41&is=65397a41&hm=59b5ed2759595f8c5540cc46b16449ba8287303613bf5eb1fc17f09d8b8e19b5&"}/>
                 </div>
                 <div class={"container-roboflow container-home-page"}>
-                    <h2>Retrouvez notre dataset sur <span onClick={() => {
+                    <h2>Qui sommes-nous ?</h2>
+                    <h3><span>C2SMR</span> est une association à but non lucratif loi 1901 dont l’objectif est d'aider le sauvetage marin à l'aide d'analyse d'image par ordinateur.</h3>
+                    <h3><span>Open source</span> : Tout notre code est disponible en accès libre et co-développé par nos
+                        bénévoles.
+                        Nous pensons que l'intelligence collective est la meilleure façon de résoudre un problème
+                        complexe.</h3>
+                    <h3><span>Détection précoce </span>: Pour lutter efficacement contre les noyades il est important de les
+                        détecter de façon précoce pour permettre une intervention rapide des
+                        secours. </h3>
+                    <h3>Retrouvez notre dataset sur <span class={"link"} onClick={() => {
                         window.open("https://universe.roboflow.com/c2smr");
                         button_click__dataLayer("roboflow");
-                    }}>ROBOFLOW</span>.</h2>
+                    }}>ROBOFLOW</span> et notre code sur <span className={"link"} onClick={() => {
+                        window.open("https://github.com/C2SMR");
+                        button_click__dataLayer("github");
+                    }}>GITHUB</span> .</h3>
                 </div>
                 <div class={"container-types-sensors container-home-page"}>
                     <div class={"cam"}>
@@ -105,6 +117,6 @@ export class Home extends React.Component {
                 </div>
                 <Footer/>
             </div>
-        );
+    );
     }
-}
+    }
