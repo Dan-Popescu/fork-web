@@ -160,13 +160,26 @@
     flex-direction: column;
 
     h2 {
-        color: white;
+        color: $color_white;
         text-align: center;
 
+    }
+
+    h3 {
+        margin-left: 10%;
+        color: $color_white;
+        width: 80%;
+        font-weight: normal;
+
         span {
-            cursor: pointer;
-            text-decoration: underline 3px;
+            font-weight: bold;
+
+            &.link {
+                cursor: pointer;
+                text-decoration: underline;
+            }
         }
+
     }
 }
 
