@@ -89,6 +89,7 @@ def get_flag():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
     responses:
@@ -115,6 +116,7 @@ def get_nb_alert():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
     responses:
@@ -150,6 +152,7 @@ def get_nb_personne():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
     responses:
@@ -177,6 +180,7 @@ def get_data_list():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
     responses:
@@ -225,6 +229,7 @@ def get_data_alert():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
     responses:
@@ -267,6 +272,7 @@ def get_init_position():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
     responses:
@@ -314,6 +320,7 @@ def get_picture_base_64():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
     responses:
@@ -343,12 +350,15 @@ def set_flag():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
         - name: color
+          in: path
           type: number
           required: true
         - name: key
+          in: path
           type: string
           required: true
     responses:
@@ -380,15 +390,19 @@ def set_number_people():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
         - name: nb_beach
+          in: path
           type: number
           required: true
         - name: nb_sea
+          in: path
           type: number
           required: true
         - name: key
+          in: path
           type: string
           required: true
     responses:
@@ -421,9 +435,11 @@ def delete_alert_by_id():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
         - name: key
+          in: path
           type: string
           required: true
     responses:
@@ -453,15 +469,19 @@ def add_alert():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
         - name: color
+          in: path
           type: number
           required: true
         - name: message
+          in: path
           type: string
           required: true
         - name: key
+          in: path
           type: string
           required: true
     responses:
@@ -496,33 +516,43 @@ def add_data_city():
     ---
     parameters:
         - name: city
+          in: path
           type: string
           required: true
         - name: nb_beach
+          in: path
           type: number
           required: true
         - name: nb_sea
+          in: path
           type: number
           required: true
         - name: precipitation
+          in: path
           type: number
           required: true
         - name: temp_beach
+          in: path
           type: number
           required: true
         - name: cloud_cover
+          in: path
           type: number
           required: true
         - name: wind
+          in: path
           type: number
           required: true
         - name: visibility
+          in: path
           type: number
           required: true
         - name: cam_visibility
+          in: path
           type: number
           required: true
         - name: key
+          in: path
           type: string
           required: true
     responses:
@@ -568,9 +598,11 @@ def add_picture_alert_or_moment():
     ---
     parameters:
         - name: key
+          in: path
           type: string
           required: true
         - name: file
+          in: path
           type: file
           required: true
     responses:
