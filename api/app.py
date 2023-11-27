@@ -1,5 +1,4 @@
 import sys
-
 from flask import Flask, request, jsonify
 from flasgger import Swagger
 from flask_mysqldb import MySQL
