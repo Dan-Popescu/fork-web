@@ -1,5 +1,5 @@
 import sys
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template_string
 from flasgger import Swagger
 from flask_mysqldb import MySQL
 from flask_cors import CORS, cross_origin
@@ -608,11 +608,11 @@ def add_picture_alert_or_moment():
         200:
             description: {"res": "yes"}
     """
-    key = request.data
-    key = json.loads(key)
-    key = key["key"]
-    if key != RASPBERRY_KEY:
-        return jsonify({"res": "key error"})
+    # key = request.data
+    # key = json.loads(key)
+    # key = key["key"]
+    # if key != RASPBERRY_KEY:
+    #    return jsonify({"res": "key error"})
     file = request.files['file']
     if file:
         filename = secure_filename(file.filename)
@@ -650,6 +650,25 @@ def add_city():
         mysql.connection.commit()
         cursor.close()
     return jsonify({"res": "yes"})
+
+
+"""
+SUPERVISION
+"""
+
+
+@app.route('/supervision/all_pictures', methods=['GET'])
+@cross_origin()
+def display_all_picture():
+    html: str = ""
+    for filename in os.listdir('.'):
+        if filename.endswith(".png"):
+            image = open(filename, 'rb')
+            encoded_string = base64.b64encode(image.read())
+            encoded_string = encoded_string.decode("utf-8")
+            html += (f"<img src='data:image/png;base64,{encoded_string}' "
+                     f"width='500' height='500' /><h2>{filename}</h2>")
+    return render_template_string(html)
 
 
 """
