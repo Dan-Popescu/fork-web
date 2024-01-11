@@ -8,6 +8,10 @@ Welcome to the C2SMR web application! This document provides information on how 
 
 ---
 
+##  CI
+
+![CI](https://github.com/Karimarf/fork-web/workflows/main_checks/badge.svg)
+
 ### Front
 ![](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
 ![](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
