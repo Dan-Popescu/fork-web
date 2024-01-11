@@ -8,6 +8,12 @@ Welcome to the C2SMR web application! This document provides information on how 
 
 ---
 
+## System
+
+![MAC](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white) ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white) 
+
+---
+
 ##  CI Status
 
 ![CI](https://github.com/Karimarf/fork-web/actions/workflows/main_checks.yml/badge.svg)
